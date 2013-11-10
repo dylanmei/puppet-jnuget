@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<options>
+    <!--
+    <proxy useSystemProxy="false" noProxy="false">
+        <host>192.168.1.1</host>
+        <port>3128</port>
+        <login>guest</login>
+        <password>guest</password>
+    </proxy> -->
+    <storages>
+        <storage class="ru.aristar.jnuget.sources.ClassicPackageSource"
+            storageName="<%= source_name %>"
+            public="true"
+            indexed="true"
+            canPush="true"
+            canDelete="true"
+            refreshInterval="5"
+        >
+            <properties>
+                <property name="folderName" value="<%= package_dir %>"/>
+            </properties>
+            <!--
+            <beforeTriggers>
+                 <trigger class="ru.aristar.jnuget.sources.push.VersionPatternConstraintTrigger">
+                      <properties>
+                           <property name="pattern" value="^\d+\.\d+\.\d*[02468]\.?.*$"/>
+                      </properties>
+                 </trigger>
+            </beforeTriggers>
+            <afterTriggers>
+                 <trigger class="ru.aristar.jnuget.sources.push.RemoveOldVersionTrigger">
+                     <properties>
+                           <property name="maxPackageCount" value="10"/>
+                     </properties>
+                 </trigger>
+            </afterTriggers>
+           -->
+        </storage>
+        <!--
+        <storage class="ru.aristar.jnuget.sources.ProxyPackageSource" indexed="true" refreshInterval="120"  canPush="false" canDelete="false" storageName='mainNugetProxy'>
+            <properties>
+                <property name="folderName" value="${nuget.home}/Proxy/"/>
+                <property name="url" value="https://nuget.org/api/v2/"/>
+            </properties>
+        </storage> -->
+     </storages>
+</options>
