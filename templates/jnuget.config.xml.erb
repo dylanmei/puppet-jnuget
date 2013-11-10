@@ -9,7 +9,7 @@
     </proxy> -->
     <storages>
         <storage class="ru.aristar.jnuget.sources.ClassicPackageSource"
-            storageName="<%= source_name %>"
+            storageName="<%= source %>"
             public="true"
             indexed="true"
             canPush="true"
@@ -17,7 +17,7 @@
             refreshInterval="5"
         >
             <properties>
-                <property name="folderName" value="<%= package_dir %>"/>
+                <property name="folderName" value="<%= source_dir %>"/>
             </properties>
             <!--
             <beforeTriggers>

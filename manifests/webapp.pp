@@ -1,14 +1,37 @@
 
-define jnuget::webapp(
+class jnuget::webapp(
+  $user           = $jnuget::params::user,
+  $source         = $jnuget::params::source,
   $version        = $jnuget::params::version,
   $webapp_dir     = $jnuget::params::webapp_dir,
-) {
+  $nuget_dir      = $jnuget::params::nuget_dir,
+  $source_dir     = $jnuget::params::source_dir,
+  $admin_user     = $jnuget::params::admin_user,
+  $admin_pass     = $jnuget::params::admin_pass,
+  $admin_api_key  = $jnuget::params::admin_api_key
+) inherits jnuget::params {
 
-  require wget
+  # create config / package directory
+  # jnuget defaults to .nuget dir in user home
 
-  wget::fetch { "jnuget-$version":
-    source        => "http://jnuget.googlecode.com/files/jnuget-$version.war",
-    destination   => "/usr/local/src/jnuget-$version.war",
+  file { $nuget_dir:
+    ensure  => directory,
+    owner   => $user,
+    require => User[$user],
+  } ->
+  file { "$nuget_dir/jnuget.users.xml":
+    content => template("jnuget/jnuget.users.xml.erb"),
+  } ->
+  file { "$nuget_dir/jnuget.config.xml":
+    content => template("jnuget/jnuget.config.xml.erb"),
+  } ->
+  file { $source_dir:
+    ensure  => directory,
+    owner   => $user,
+  }
+
+  class { 'jnuget::package':
+    version => $version,
   } ->
   file { "$webapp_dir/ROOT.war":
     source  => "/usr/local/src/jnuget-$version.war",
