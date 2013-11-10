@@ -10,20 +10,37 @@ The jnuget module allows you to install and configure a [Java NuGet server](http
 
     include jnuget::webapp
 
-### Slightly more complicated
+### Example site.pp
 
-    class { 'nuget::webapp':
-      version =>  '0.7.3',
-      user    =>  'tomcat-user',
-      feed    =>  'chocolatey',
+    user { 'jnuget':
+      ensure     => present,
+      managehome => true,
     }
 
-###Caveats
+    tomcat7_rhel::tomcat_application { 'jnuget':
+      application_root => "/opt",
+      tomcat_user      => "jnuget",
+      tomcat_port      => "8080",
+      jvm_envs         => "-server -Xmx1024m -Xms128m -XX:MaxPermSize=256m \
+                           -Dcom.sun.management.jmxremote \
+                           -Dcom.sun.management.jmxremote.authenticate=false \
+                           -Dcom.sun.management.jmxremote.ssl=false",
+      require          => User['jnuget'],
+    }
+
+    class { 'jnuget::webapp':
+      user     => 'jnuget',
+      source   => 'chocolatey',
+      require  => [
+        User['jnuget'],
+        Tomcat7_Rhel::Tomcat_application['jnuget']
+      ],
+    }
+
+##Caveats
 
 Supports one package source at the moment.
 
 Supports one user and api-key at the moment.
 
 Requires [maestrodev/puppet-wget](https://github.com/maestrodev/puppet-wget)
-
-Tested on CentOS using the excellent [laurilehmijoki/tomcat7\_rhel module](http://github.com/laurilehmijoki/tomcat7_rhel/tree/master/manifests)
