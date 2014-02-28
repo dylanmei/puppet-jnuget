@@ -38,6 +38,6 @@ class jnuget::webapp(
   file { "${webapp_dir}/ROOT.war":
     source  => "/usr/local/src/jnuget-${version}.war",
     owner   => $user,
-    replace => false
+    group   => $user,
   }
 }
