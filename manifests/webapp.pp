@@ -1,4 +1,6 @@
-
+# Class: jnuget::webapp
+#
+#
 class jnuget::webapp(
   $user           = $jnuget::params::user,
   $source         = $jnuget::params::source,
@@ -19,10 +21,10 @@ class jnuget::webapp(
     owner   => $user,
     require => User[$user],
   } ->
-  file { "$nuget_dir/jnuget.users.xml":
+  file { "${nuget_dir}/jnuget.users.xml":
     content => template("jnuget/jnuget.users.xml.erb"),
   } ->
-  file { "$nuget_dir/jnuget.config.xml":
+  file { "${nuget_dir}/jnuget.config.xml":
     content => template("jnuget/jnuget.config.xml.erb"),
   } ->
   file { $source_dir:
@@ -33,8 +35,9 @@ class jnuget::webapp(
   class { 'jnuget::package':
     version => $version,
   } ->
-  file { "$webapp_dir/ROOT.war":
-    source  => "/usr/local/src/jnuget-$version.war",
+  file { "${webapp_dir}/ROOT.war":
+    source  => "/usr/local/src/jnuget-${version}.war",
     owner   => $user,
+    replace => false
   }
 }
