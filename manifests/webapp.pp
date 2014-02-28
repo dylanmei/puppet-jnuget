@@ -10,7 +10,8 @@ class jnuget::webapp(
   $source_dir     = $jnuget::params::source_dir,
   $admin_user     = $jnuget::params::admin_user,
   $admin_pass     = $jnuget::params::admin_pass,
-  $admin_api_key  = $jnuget::params::admin_api_key
+  $admin_api_key  = $jnuget::params::admin_api_key,
+  $war_context    = 'jnuget'
 ) inherits jnuget::params {
 
   # create config / package directory
@@ -35,7 +36,7 @@ class jnuget::webapp(
   class { 'jnuget::package':
     version => $version,
   } ->
-  file { "${webapp_dir}/ROOT.war":
+  file { "${webapp_dir}/${war_context}.war":
     source  => "/usr/local/src/jnuget-${version}.war",
     owner   => $user,
     group   => $user,
