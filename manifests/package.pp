@@ -9,7 +9,7 @@ class jnuget::package (
   }
 
   wget::fetch { "jnuget-$version":
-    source        => "http://jnuget.googlecode.com/files/jnuget-$version.war",
+    source        => "https://bitbucket.org/aristar/jnuget/downloads/jnuget-$version.war",
     destination   => "/usr/local/src/jnuget-$version.war",
   }
 }
